@@ -1,5 +1,8 @@
 package com.ghost.ghost.service;
 
-public class EmployeeService {
-    
+import com.ghost.ghost.dto.EmployeeDto;
+
+public interface EmployeeService {
+    EmployeeDto createEmployee(EmployeeDto employeeDto);
+
 }
