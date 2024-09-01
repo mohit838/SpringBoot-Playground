@@ -3,6 +3,7 @@ package com.ghost.ghost.service.employeeImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ghost.ghost.dto.EmployeeDto;
@@ -36,8 +37,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> getAllEmployees() {
-        List<Employee> employees = employeeRepository.findAll();
-        return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
+        List<Employee> employees = employeeRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        return employees.stream()
+                // .sorted(Comparator.comparing(Employee::getId))
+                .map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
                 .collect(Collectors.toList());
     }
 
