@@ -1,5 +1,7 @@
 package com.ghost.ghost.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,13 @@ public class EmployeeController {
     @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") Long employeeId) {
         EmployeeDto getSingleEmployee = employeeService.getEmployeeById(employeeId);
-        // return new ResponseEntity.ok(getSingleEmployee);
-        return new ResponseEntity<>(getSingleEmployee, HttpStatus.OK);
+        return ResponseEntity.ok(getSingleEmployee);
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<List<EmployeeDto>> getAllEmployee() {
+        List<EmployeeDto> getAllEmployees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(getAllEmployees);
     }
 
 }
