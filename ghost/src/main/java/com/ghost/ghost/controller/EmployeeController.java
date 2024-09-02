@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ghost.ghost.apiResponse.ApiResponse;
 import com.ghost.ghost.dto.EmployeeDto;
 import com.ghost.ghost.service.EmployeeService;
 
@@ -53,9 +54,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employee/{id}")
-    public ResponseEntity<String> deleteEmployeeById(@PathVariable("id") Long employeeId) {
+    public ResponseEntity<ApiResponse> deleteEmployeeById(@PathVariable("id") Long employeeId) {
         employeeService.deleteEmployeeById(employeeId);
-        return ResponseEntity.ok("Delete EMployee Successfully!");
+        ApiResponse response = new ApiResponse("Delete Employee Successfully!");
+        return ResponseEntity.ok(response);
     }
 
 }
