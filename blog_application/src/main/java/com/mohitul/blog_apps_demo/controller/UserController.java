@@ -4,14 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mohitul.blog_apps_demo.apiResponse.ApiResponse;
 import com.mohitul.blog_apps_demo.payloads.UserDto;
@@ -32,7 +25,8 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update-user/{id}")
+    // For partial updates, consider using an HTTP PATCH method instead of PUT.
+    @PatchMapping("/update-user/{id}")
     public ResponseEntity<UserDto> updateUser(
             @Valid @RequestBody UserDto userDto,
             @PathVariable("id") Long userId) {

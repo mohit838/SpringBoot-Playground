@@ -37,15 +37,27 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
-        UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException(
-                                "User", "id", userId));
+        UserEntity existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
-        modelMapper.map(userDto, userEntity);
-        UserEntity updateUser = userRepository.save(userEntity);
-        return modelMapper.map(updateUser, UserDto.class);
+        if (userDto.getUserName() != null && !userDto.getUserName().trim().isEmpty()) {
+            existingUser.setUserName(userDto.getUserName());
+        }
+        if (userDto.getEmail() != null && !userDto.getEmail().trim().isEmpty()) {
+            existingUser.setEmail(userDto.getEmail());
+        }
+        if (userDto.getPassword() != null && !userDto.getPassword().trim().isEmpty()) {
+            existingUser.setPassword(userDto.getPassword());
+        }
+        if (userDto.getAbout() != null && !userDto.getAbout().trim().isEmpty()) {
+            existingUser.setAbout(userDto.getAbout());
+        }
+
+        UserEntity updatedUser = userRepository.save(existingUser);
+
+        return modelMapper.map(updatedUser, UserDto.class);
     }
+
 
     @Override
     public UserDto getUserById(Long userId) {
