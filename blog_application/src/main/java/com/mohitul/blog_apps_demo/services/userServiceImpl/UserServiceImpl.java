@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mohitul.blog_apps_demo.entity.UserEntity;
+import com.mohitul.blog_apps_demo.exceptions.ResourceAlreadyExistsException;
 import com.mohitul.blog_apps_demo.exceptions.ResourceNotFoundException;
 import com.mohitul.blog_apps_demo.payloads.UserDto;
 import com.mohitul.blog_apps_demo.repository.UserRepository;
@@ -24,6 +25,11 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public UserDto createNewUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new ResourceAlreadyExistsException(
+                    "User", "email", userDto.getEmail());
+        }
+
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         UserEntity savedUser = userRepository.save(userEntity);
         return modelMapper.map(savedUser, UserDto.class);
@@ -33,7 +39,8 @@ public class UserServiceImpl implements UserServices {
     public UserDto updateUser(UserDto userDto, Long userId) {
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(
-                        () -> new ResourceNotFoundException("User", " id ", userId));
+                        () -> new ResourceNotFoundException(
+                                "User", "id", userId));
 
         modelMapper.map(userDto, userEntity);
         UserEntity updateUser = userRepository.save(userEntity);
@@ -43,7 +50,8 @@ public class UserServiceImpl implements UserServices {
     @Override
     public UserDto getUserById(Long userId) {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(
-                () -> new ResourceNotFoundException("User", " id:", userId));
+                () -> new ResourceNotFoundException(
+                        "User", "id", userId));
 
         return modelMapper.map(userEntity, UserDto.class);
     }
@@ -62,7 +70,8 @@ public class UserServiceImpl implements UserServices {
     @Override
     public void deleteUser(Long userId) {
         UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User ", " id:", userId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User", "id", userId));
         userRepository.delete(userEntity);
 
     }

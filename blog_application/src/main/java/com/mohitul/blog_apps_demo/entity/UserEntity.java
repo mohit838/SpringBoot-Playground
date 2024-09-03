@@ -6,9 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,20 +23,13 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", nullable = false, length = 100)
-    @Size(min = 4, message = "Must be at least 4 characters.")
-    @NotBlank(message = "User name cannot be empty.")
+    @Column(name = "user_name", nullable = false, length = 100, unique = true)
     private String userName;
 
-    @Email(message = "Email not valid.")
-    @Column(name = "email_id", nullable = false, length = 50)
-    @NotBlank(message = "Email cannot be empty.")
+    @Column(name = "email_id", nullable = false, length = 50, unique = true)
     private String email;
 
-    @NotBlank(message = "Password cannot be empty.")
-    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters.")
     private String password;
 
-    @NotBlank(message = "About field cannot be empty.")
     private String about;
 }
