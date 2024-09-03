@@ -3,12 +3,12 @@ package com.mohitul.blog_apps_demo.services.userServiceImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mohitul.blog_apps_demo.entity.UserEntity;
 import com.mohitul.blog_apps_demo.exceptions.ResourceNotFoundException;
-import com.mohitul.blog_apps_demo.mapper.UserMapper;
 import com.mohitul.blog_apps_demo.payloads.UserDto;
 import com.mohitul.blog_apps_demo.repository.UserRepository;
 import com.mohitul.blog_apps_demo.services.UserServices;
@@ -19,13 +19,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserServices {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public UserDto createNewUser(UserDto userDto) {
-        UserEntity userEntity = UserMapper.mapToUser(userDto);
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         UserEntity savedUser = userRepository.save(userEntity);
-        return UserMapper.mapToUserDto(savedUser);
+        return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override
@@ -34,14 +35,9 @@ public class UserServiceImpl implements UserServices {
                 .orElseThrow(
                         () -> new ResourceNotFoundException("User", " id ", userId));
 
-        userEntity.setUserName(userDto.getUserName());
-        userEntity.setEmail(userDto.getEmail());
-        userEntity.setPassword(userDto.getPassword());
-        userEntity.setAbout(userDto.getAbout());
-
+        modelMapper.map(userDto, userEntity);
         UserEntity updateUser = userRepository.save(userEntity);
-
-        return UserMapper.mapToUserDto(updateUser);
+        return modelMapper.map(updateUser, UserDto.class);
     }
 
     @Override
@@ -49,7 +45,7 @@ public class UserServiceImpl implements UserServices {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", " id:", userId));
 
-        return UserMapper.mapToUserDto(userEntity);
+        return modelMapper.map(userEntity, UserDto.class);
     }
 
     @Override
@@ -58,7 +54,8 @@ public class UserServiceImpl implements UserServices {
                 Sort.by(Sort.Direction.DESC, "id"));
 
         return entities.stream()
-                .map((entity) -> UserMapper.mapToUserDto(entity)).collect(Collectors.toList());
+                .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
+                .collect(Collectors.toList());
 
     }
 
