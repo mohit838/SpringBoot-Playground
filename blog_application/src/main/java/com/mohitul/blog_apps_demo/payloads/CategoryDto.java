@@ -1,6 +1,5 @@
 package com.mohitul.blog_apps_demo.payloads;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class CategoryDto {
     private Long categoryId;
 
     @Size(min = 4, message = "Category name must be at least 4 characters.")
-//    @NotBlank(message = "Category name cannot be empty.")
+    // @NotBlank(message = "Category name cannot be empty.")
     private String categoryTitle;
 
     private String categoryDesc;
