@@ -22,17 +22,17 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class UserController {
     private UserServices userServices;
 
-    @PostMapping("/user")
+    @PostMapping("/new-user")
     public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDto userDto) {
         UserDto newUser = userServices.createNewUser(userDto);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/update-user/{id}")
     public ResponseEntity<UserDto> updateUser(
             @Valid @RequestBody UserDto userDto,
             @PathVariable("id") Long userId) {
@@ -40,19 +40,19 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/get-user/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId) {
         UserDto getUserById = userServices.getUserById(userId);
         return ResponseEntity.ok(getUserById);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/get-all-user")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> userLists = userServices.listOfUsers();
         return ResponseEntity.ok(userLists);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/del-user/{id}")
     public ResponseEntity<ApiResponse> deleteEmployeeById(@PathVariable("id") Long userId) {
         userServices.deleteUser(userId);
         ApiResponse apiResponse = new ApiResponse("Delete User Successfully.", true);
