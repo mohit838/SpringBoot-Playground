@@ -17,6 +17,7 @@ import com.mohitul.blog_apps_demo.apiResponse.ApiResponse;
 import com.mohitul.blog_apps_demo.payloads.UserDto;
 import com.mohitul.blog_apps_demo.services.UserServices;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -26,14 +27,15 @@ public class UserController {
     private UserServices userServices;
 
     @PostMapping("/")
-    public ResponseEntity<UserDto> createNewUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDto userDto) {
         UserDto newUser = userServices.createNewUser(userDto);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(
-            @RequestBody UserDto userDto, @PathVariable("id") Long userId) {
+            @Valid @RequestBody UserDto userDto,
+            @PathVariable("id") Long userId) {
         UserDto updatedUser = userServices.updateUser(userDto, userId);
         return ResponseEntity.ok(updatedUser);
     }

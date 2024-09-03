@@ -1,6 +1,8 @@
 /media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/BlogAppsDemoApplication.java
+/media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/apiResponse/ApiResponse.java
 /media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/controller/UserController.java
 /media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/entity/UserEntity.java
+/media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/exceptions/GlobalExceptionHandler.java
 /media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/exceptions/ResourceNotFoundException.java
 /media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/mapper/UserMapper.java
 /media/grio/tutorials/githubclone/SpringBoot-Playground/blog_application/src/main/java/com/mohitul/blog_apps_demo/payloads/UserDto.java
