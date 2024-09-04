@@ -1,5 +1,6 @@
 package com.mohitul.blog_apps_demo.controller;
 
+import com.mohitul.blog_apps_demo.apiResponse.ApiResponse;
 import com.mohitul.blog_apps_demo.payloads.CategoryDto;
 import com.mohitul.blog_apps_demo.payloads.PostDto;
 import com.mohitul.blog_apps_demo.services.CategoryServices;
@@ -58,5 +59,14 @@ public class PostController {
     ) {
         PostDto post = postServices.getPostById(postId);
         return ResponseEntity.ok(post);
+    }
+
+    @DeleteMapping("/del-post/{id}")
+    public ResponseEntity<ApiResponse> deletePost(
+            @PathVariable("id") Long postId
+    ) {
+        postServices.deletePost(postId);
+        ApiResponse apiResponse = new ApiResponse("Delete Post Successfully.", true);
+        return ResponseEntity.ok(apiResponse);
     }
 }
