@@ -35,7 +35,7 @@ public class PostController {
     private FileService fileService;
 
     @Value("${project.image}")
-    private String imagePath;
+    private static String uploadDir = System.getProperty("user.dir")+"/src/main/images";
 
     @PostMapping("/new-post/user/{user}/category/{category}/post")
     public ResponseEntity<PostDto> createNewCategory(
@@ -110,7 +110,7 @@ public class PostController {
             @RequestParam("image") MultipartFile image, @PathVariable("id") Long postId) throws IOException {
 
         PostDto postDto = postServices.getPostById(postId);
-        String fileName = fileService.uploadImage(imagePath, image);
+        String fileName = fileService.uploadImage(uploadDir, image);
         postDto.setPostImageName(fileName);
         PostDto updatedPost = postServices.updatePost(postDto, postId);
 
