@@ -69,4 +69,15 @@ public class PostController {
         ApiResponse apiResponse = new ApiResponse("Delete Post Successfully.", true);
         return ResponseEntity.ok(apiResponse);
     }
+
+    @PatchMapping("/update-post/{id}")
+    public ResponseEntity<PostDto> getPostById(
+            @Valid
+            @RequestBody PostDto postDto,
+            @PathVariable("id") Long postId
+    ) {
+        PostDto updatePost = postServices.updatePost(postDto,postId);
+        //  return new ResponseEntity<PostDto>(updatePost, HttpStatus.OK);
+        return ResponseEntity.ok(updatePost);
+    }
 }
