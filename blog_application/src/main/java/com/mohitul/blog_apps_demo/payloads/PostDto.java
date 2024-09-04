@@ -14,16 +14,10 @@ import lombok.Setter;
 public class PostDto {
 
     private Long id;
-
     private String postTitle;
-
     private String postDesc;
-
     private String postImageName;
-
     private Date postDate;
-
     private CategoryDto category;
-
     private UserDto user;
 }
