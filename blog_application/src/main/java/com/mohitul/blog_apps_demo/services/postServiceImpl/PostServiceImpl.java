@@ -53,13 +53,19 @@ public class PostServiceImpl implements PostServices {
     }
 
     @Override
-    public PostDto getPostById(PostDto postDto, Long postId) {
-        return null;
+    public PostDto getPostById(Long postId) {
+        PostEntity getPostById = postRepository.findById(postId)
+                .orElseThrow(()-> new ResourceNotFoundException("Post", "id", postId));
+        return modelMapper.map(getPostById, PostDto.class);
     }
 
     @Override
     public List<PostDto> getAllPosts() {
-        return null;
+        List<PostEntity> allPosts = postRepository.findAll();
+
+        return allPosts.stream()
+                .map((post)->modelMapper.map(post, PostDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

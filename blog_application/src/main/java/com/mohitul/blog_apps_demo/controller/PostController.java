@@ -45,4 +45,18 @@ public class PostController {
         List<PostDto> getAllPostsByCat = postServices.getAllPostsByCategoryId(categoryId);
         return ResponseEntity.ok(getAllPostsByCat);
     }
+
+    @GetMapping("/get-all-posts")
+    public ResponseEntity<List<PostDto>> getAllPosts() {
+        List<PostDto> getAllPosts = postServices.getAllPosts();
+        return ResponseEntity.ok(getAllPosts);
+    }
+
+    @GetMapping("/get-post/{id}")
+    public ResponseEntity<PostDto> getPostById(
+            @PathVariable("id") Long postId
+    ) {
+        PostDto post = postServices.getPostById(postId);
+        return ResponseEntity.ok(post);
+    }
 }
