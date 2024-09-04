@@ -2,6 +2,7 @@ package com.mohitul.blog_apps_demo.controller;
 
 import java.util.List;
 
+import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,10 +54,13 @@ public class PostController {
     }
 
     @GetMapping("/get-all-posts")
-    public ResponseEntity<List<PostDto>> getAllPosts(
+    public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
-        List<PostDto> getAllPosts = postServices.getAllPosts(pageNumber, pageSize);
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+    ) {
+        PostResponse getAllPosts = postServices.getAllPosts(pageNumber, pageSize, sortBy, sortDir);
         return ResponseEntity.ok(getAllPosts);
     }
 

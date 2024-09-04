@@ -2,6 +2,7 @@ package com.mohitul.blog_apps_demo.services;
 
 import java.util.List;
 
+import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
 import com.mohitul.blog_apps_demo.payloads.PostDto;
 
 public interface PostServices {
@@ -12,7 +13,7 @@ public interface PostServices {
 
     PostDto getPostById(Long postId);
 
-    List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize);
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     void deletePost(Long postId);
 
