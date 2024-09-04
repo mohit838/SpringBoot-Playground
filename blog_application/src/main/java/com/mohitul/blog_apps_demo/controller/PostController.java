@@ -1,10 +1,12 @@
 package com.mohitul.blog_apps_demo.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
 import com.mohitul.blog_apps_demo.config.AppConstants;
-import com.mohitul.blog_apps_demo.payloads.UserDto;
+import com.mohitul.blog_apps_demo.services.FileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,12 +25,17 @@ import com.mohitul.blog_apps_demo.services.PostServices;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/post")
 public class PostController {
     private final PostServices postServices;
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private static String uploadDir = System.getProperty("user.dir")+"/src/main/images";
 
     @PostMapping("/new-post/user/{user}/category/{category}/post")
     public ResponseEntity<PostDto> createNewCategory(
@@ -95,6 +102,19 @@ public class PostController {
     public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("title") String keyword) {
         List<PostDto> postLists = postServices.searchPosts(keyword);
         return ResponseEntity.ok(postLists);
+    }
+
+    // Image upload
+    @PostMapping("/upload/post/{id}")
+    public ResponseEntity<PostDto> uploadPostImage(
+            @RequestParam("image") MultipartFile image, @PathVariable("id") Long postId) throws IOException {
+
+        PostDto postDto = postServices.getPostById(postId);
+        String fileName = fileService.uploadImage(uploadDir, image);
+        postDto.setPostImageName(fileName);
+        PostDto updatedPost = postServices.updatePost(postDto, postId);
+
+        return ResponseEntity.ok(updatedPost);
     }
 
 }
