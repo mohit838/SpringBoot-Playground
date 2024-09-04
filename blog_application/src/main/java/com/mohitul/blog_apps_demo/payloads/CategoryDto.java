@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryDto {
 
-    private Long categoryId;
+    private Long id;
 
     @Size(min = 4, message = "Category name must be at least 4 characters.")
     // @NotBlank(message = "Category name cannot be empty.")
