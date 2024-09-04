@@ -1,17 +1,25 @@
 package com.mohitul.blog_apps_demo.controller;
 
-import com.mohitul.blog_apps_demo.apiResponse.ApiResponse;
-import com.mohitul.blog_apps_demo.payloads.CategoryDto;
-import com.mohitul.blog_apps_demo.payloads.PostDto;
-import com.mohitul.blog_apps_demo.services.CategoryServices;
-import com.mohitul.blog_apps_demo.services.PostServices;
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.mohitul.blog_apps_demo.apiResponse.ApiResponse;
+import com.mohitul.blog_apps_demo.payloads.PostDto;
+import com.mohitul.blog_apps_demo.services.PostServices;
+
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
@@ -23,8 +31,7 @@ public class PostController {
     public ResponseEntity<PostDto> createNewCategory(
             @Valid @RequestBody PostDto postDto,
             @PathVariable("user") Long userId,
-            @PathVariable("category") Long categoryId
-            ) {
+            @PathVariable("category") Long categoryId) {
         PostDto newPost = postServices.createNewPost(postDto, userId, categoryId);
         return new ResponseEntity<>(newPost, HttpStatus.CREATED);
     }
@@ -32,8 +39,7 @@ public class PostController {
     // Get All posts by user id
     @GetMapping("/get-all-posts-user/{id}")
     public ResponseEntity<List<PostDto>> getAllPostsByUserId(
-            @PathVariable("id") Long userId
-    ) {
+            @PathVariable("id") Long userId) {
         List<PostDto> getAllPostsUser = postServices.getAllPostsByUserId(userId);
         return ResponseEntity.ok(getAllPostsUser);
     }
@@ -41,30 +47,29 @@ public class PostController {
     // Get all posts by category id
     @GetMapping("/get-all-posts-category/{id}")
     public ResponseEntity<List<PostDto>> getAllPostsByCategoryId(
-            @PathVariable("id") Long categoryId
-    ) {
+            @PathVariable("id") Long categoryId) {
         List<PostDto> getAllPostsByCat = postServices.getAllPostsByCategoryId(categoryId);
         return ResponseEntity.ok(getAllPostsByCat);
     }
 
     @GetMapping("/get-all-posts")
-    public ResponseEntity<List<PostDto>> getAllPosts() {
-        List<PostDto> getAllPosts = postServices.getAllPosts();
+    public ResponseEntity<List<PostDto>> getAllPosts(
+            @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+        List<PostDto> getAllPosts = postServices.getAllPosts(pageNumber, pageSize);
         return ResponseEntity.ok(getAllPosts);
     }
 
     @GetMapping("/get-post/{id}")
     public ResponseEntity<PostDto> getPostById(
-            @PathVariable("id") Long postId
-    ) {
+            @PathVariable("id") Long postId) {
         PostDto post = postServices.getPostById(postId);
         return ResponseEntity.ok(post);
     }
 
     @DeleteMapping("/del-post/{id}")
     public ResponseEntity<ApiResponse> deletePost(
-            @PathVariable("id") Long postId
-    ) {
+            @PathVariable("id") Long postId) {
         postServices.deletePost(postId);
         ApiResponse apiResponse = new ApiResponse("Delete Post Successfully.", true);
         return ResponseEntity.ok(apiResponse);
@@ -72,12 +77,10 @@ public class PostController {
 
     @PatchMapping("/update-post/{id}")
     public ResponseEntity<PostDto> getPostById(
-            @Valid
-            @RequestBody PostDto postDto,
-            @PathVariable("id") Long postId
-    ) {
-        PostDto updatePost = postServices.updatePost(postDto,postId);
-        //  return new ResponseEntity<PostDto>(updatePost, HttpStatus.OK);
+            @Valid @RequestBody PostDto postDto,
+            @PathVariable("id") Long postId) {
+        PostDto updatePost = postServices.updatePost(postDto, postId);
+        // return new ResponseEntity<PostDto>(updatePost, HttpStatus.OK);
         return ResponseEntity.ok(updatePost);
     }
 }
