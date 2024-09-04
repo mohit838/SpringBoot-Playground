@@ -3,6 +3,7 @@ package com.mohitul.blog_apps_demo.controller;
 import java.util.List;
 
 import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
+import com.mohitul.blog_apps_demo.config.AppConstants;
 import com.mohitul.blog_apps_demo.payloads.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,10 +57,10 @@ public class PostController {
 
     @GetMapping("/get-all-posts")
     public ResponseEntity<PostResponse> getAllPosts(
-            @RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
     ) {
         PostResponse getAllPosts = postServices.getAllPosts(pageNumber, pageSize, sortBy, sortDir);
         return ResponseEntity.ok(getAllPosts);
