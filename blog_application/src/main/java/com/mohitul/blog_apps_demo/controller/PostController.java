@@ -3,6 +3,7 @@ package com.mohitul.blog_apps_demo.controller;
 import java.util.List;
 
 import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
+import com.mohitul.blog_apps_demo.payloads.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -87,4 +88,12 @@ public class PostController {
         // return new ResponseEntity<PostDto>(updatePost, HttpStatus.OK);
         return ResponseEntity.ok(updatePost);
     }
+
+    //  Post searches by post title
+    @GetMapping("/search-by-title/{title}")
+    public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("title") String keyword) {
+        List<PostDto> postLists = postServices.searchPosts(keyword);
+        return ResponseEntity.ok(postLists);
+    }
+
 }
