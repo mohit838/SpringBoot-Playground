@@ -74,7 +74,20 @@ public class PostServiceImpl implements PostServices {
         @Override
         public List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize) {
 
-                PageRequest pageable = PageRequest.of(pageNumber, pageSize);
+                // Adjust pageNumber to match zero-based index
+                int adjustedPageNumber = pageNumber - 1;
+
+                // Validate pageNumber to ensure it is not negative
+                if (adjustedPageNumber < 0) {
+                        throw new IllegalArgumentException("Page number must be greater than or equal to 1.");
+                }
+
+                // Validate pageSize to ensure it is positive
+                if (pageSize <= 0) {
+                        throw new IllegalArgumentException("Page size must be greater than 0.");
+                }
+
+                PageRequest pageable = PageRequest.of(adjustedPageNumber, pageSize);
 
                 Page<PostEntity> pagePost = postRepository.findAll(pageable);
                 List<PostEntity> postContent = pagePost.getContent();
