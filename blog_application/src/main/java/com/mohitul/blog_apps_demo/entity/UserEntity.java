@@ -46,11 +46,11 @@ public class UserEntity implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private Set<Role> role = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.role.stream().map((role1) -> new SimpleGrantedAuthority(role1.getName()))
+        return this.roles.stream().map((role1) -> new SimpleGrantedAuthority(role1.getName()))
                 .collect(Collectors.toList());
     }
 
