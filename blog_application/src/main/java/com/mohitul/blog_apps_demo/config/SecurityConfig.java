@@ -36,7 +36,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
