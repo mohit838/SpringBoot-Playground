@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mohitul.blog_apps_demo.apiResponse.PostResponse;
 import com.mohitul.blog_apps_demo.entity.CategoryEntity;
 import com.mohitul.blog_apps_demo.entity.PostEntity;
 import com.mohitul.blog_apps_demo.entity.UserEntity;
@@ -152,7 +152,7 @@ public class PostServiceImpl implements PostServices {
 
     @Override
     public List<PostDto> searchPosts(String keyword) {
-        List<PostEntity> posts = postRepository.searchByPostTitle("%"+keyword+"%");
+        List<PostEntity> posts = postRepository.searchByPostTitle("%" + keyword + "%");
         return posts.stream().map(post -> modelMapper.map(post, PostDto.class))
                 .collect(Collectors.toList());
     }
