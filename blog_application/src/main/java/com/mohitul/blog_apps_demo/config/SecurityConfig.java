@@ -26,9 +26,11 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/refresh").permitAll()
+                        .requestMatchers("/test","/auth/login", "/auth/refresh").permitAll()
                         .requestMatchers("/posts/**", "/comments/**", "/categories/**")
-                        .authenticated()
+//                        .hasAnyRole("ADMIN", "USER")
+//                        .anyRequest()
+                                .authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
