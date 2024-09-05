@@ -4,9 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,14 @@ public class JWTHelper {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; // 5 hours
     public static final long REFRESH_TOKEN_VALIDITY = 30 * 24 * 60 * 60; // 30 days
+
+    // Load secret key from application.properties or environment variable
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     // Retrieve username from JWT token
     public String getUsernameFromToken(String token) {
@@ -36,10 +46,8 @@ public class JWTHelper {
 
     // Get all claims from the token
     private Claims getAllClaimsFromToken(String token) {
-        // Replace with a secure key
-        String secret = "jwt_token_is_here";
         return Jwts.parserBuilder()
-                .setSigningKey(secret.getBytes())
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -70,7 +78,7 @@ public class JWTHelper {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + validity * 1000))
-                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS512))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 

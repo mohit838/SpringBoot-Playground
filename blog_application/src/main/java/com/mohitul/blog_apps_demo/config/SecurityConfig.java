@@ -26,14 +26,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/home/**").authenticated()
                         .requestMatchers("/auth/login", "/auth/refresh").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/moderator/**").hasRole("MODERATOR")
                         .requestMatchers("/posts/**", "/comments/**", "/categories/**")
-                        .hasAnyRole("USER", "MODERATOR", "ADMIN") // Allow fetch posts, comments, and categories
-                        .anyRequest().authenticated() // All other requests require authentication
+                        .authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
