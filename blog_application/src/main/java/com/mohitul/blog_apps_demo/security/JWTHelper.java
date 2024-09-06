@@ -22,10 +22,15 @@ public class JWTHelper {
 
     // Load secret key from application.properties or environment variable
     @Value("${jwt.secret}")
-    private String secret;
+    private String secret; // Make sure the secret is at least 256 bits
 
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        // Ensure the secret key is at least 256 bits for HS256, HS384, or HS512
+        byte[] keyBytes = secret.getBytes();
+        if (keyBytes.length < 32) {  // 256 bits = 32 bytes
+            throw new IllegalArgumentException("The secret key must be at least 256 bits (32 bytes) long.");
+        }
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     // Retrieve username from JWT token

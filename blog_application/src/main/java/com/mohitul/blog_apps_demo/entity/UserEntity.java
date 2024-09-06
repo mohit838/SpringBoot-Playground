@@ -56,6 +56,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
+        //TODO:: Email treat as a userName here 'Change later'
         return this.email;
     }
 }

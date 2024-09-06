@@ -17,9 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @Validated
 public class AuthController {
 
@@ -43,7 +42,7 @@ public class AuthController {
         String refreshToken = this.helper.generateRefreshToken(userDetails);
 
         JWTResponse response = JWTResponse.builder()
-                .jwtToken(token)
+                .accessToken(token)
                 .refreshToken(refreshToken)
                 .username(userDetails.getUsername())
                 .build();
@@ -71,7 +70,7 @@ public class AuthController {
             String newRefreshToken = this.helper.generateRefreshToken(userDetails);
 
             JWTResponse response = JWTResponse.builder()
-                    .jwtToken(token)
+                    .accessToken(token)
                     .refreshToken(newRefreshToken)
                     .username(userDetails.getUsername())
                     .build();

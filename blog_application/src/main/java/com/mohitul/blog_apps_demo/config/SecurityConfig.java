@@ -26,15 +26,19 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/test","/auth/login", "/auth/refresh").permitAll()
-                        .requestMatchers("/posts/**", "/comments/**", "/categories/**")
-//                        .hasAnyRole("ADMIN", "USER")
-//                        .anyRequest()
-                                .authenticated()
+                        .requestMatchers(
+                                "/test",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/refresh").permitAll()
+                        .requestMatchers(
+                                "/api/v1/posts/**",
+                                "/api/v1/comments/**",
+                                "/api/v1/categories/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .anyRequest().authenticated()  // Ensure all other requests are authenticated
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
