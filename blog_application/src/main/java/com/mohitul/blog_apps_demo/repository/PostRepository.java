@@ -1,13 +1,14 @@
 package com.mohitul.blog_apps_demo.repository;
 
-import com.mohitul.blog_apps_demo.entity.CategoryEntity;
-import com.mohitul.blog_apps_demo.entity.PostEntity;
-import com.mohitul.blog_apps_demo.entity.UserEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import com.mohitul.blog_apps_demo.entity.CategoryEntity;
+import com.mohitul.blog_apps_demo.entity.PostEntity;
+import com.mohitul.blog_apps_demo.entity.UserEntity;
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
 

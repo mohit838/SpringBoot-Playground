@@ -35,11 +35,11 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/post")
 public class PostController {
+    @Value("${project.image}")
+    // private static String uploadDir;
+    private static String uploadDir = System.getProperty("user.dir") + "/src/main/images";
     private final PostServices postServices;
     private FileService fileService;
-
-    @Value("${project.image}")
-    private static String uploadDir = System.getProperty("user.dir") + "/src/main/images";
 
     @PostMapping("/new-post/user/{user}/category/{category}/post")
     public ResponseEntity<PostDto> createNewCategory(
@@ -92,7 +92,7 @@ public class PostController {
     }
 
     @PatchMapping("/update-post/{id}")
-    public ResponseEntity<PostDto> getPostById(
+    public ResponseEntity<PostDto> updatePostById(
             @Valid @RequestBody PostDto postDto,
             @PathVariable("id") Long postId) {
         PostDto updatePost = postServices.updatePost(postDto, postId);

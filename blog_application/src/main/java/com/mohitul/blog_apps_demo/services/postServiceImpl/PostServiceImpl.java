@@ -75,43 +75,31 @@ public class PostServiceImpl implements PostServices {
 
     @Override
     public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
-
-        // Validate pageNumber to ensure it is not negative
         if (pageNumber < 0) {
             throw new IllegalArgumentException("Page number must be greater than or equal to 0.");
         }
-
-        // Validate pageSize to ensure it is positive
         if (pageSize <= 0) {
             throw new IllegalArgumentException("Page size must be greater than 0.");
         }
 
-        // Default to ascending order if sortDir is invalid
         Sort.Direction direction = "desc".equalsIgnoreCase(sortDir) ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-        // Create a Sort object based on the provided sortBy and sortDir
         Sort sort = Sort.by(direction, sortBy);
-
-        // Create a PageRequest with the provided pageNumber, pageSize, and sort
         PageRequest pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        // Fetch the page from the repository
         Page<PostEntity> pagePost = postRepository.findAll(pageable);
-        List<PostEntity> postContent = pagePost.getContent();
 
-        // Fetch the first page content if pageNumber is 0 or 1
-        if (pageNumber == 0 || pageNumber == 1) {
-            PageRequest firstPageRequest = PageRequest.of(0, pageSize, sort);
-            Page<PostEntity> firstPagePost = postRepository.findAll(firstPageRequest);
-            postContent = firstPagePost.getContent();
-        }
+        /* Fetch the first page content if pageNumber is 0 or 1
+            if (pageNumber == 0 || pageNumber == 1) {
+               PageRequest firstPageRequest = PageRequest.of(0, pageSize, sort);
+               Page<PostEntity> firstPagePost = postRepository.findAll(firstPageRequest);
+               postContent = firstPagePost.getContent();
+               }
+         */
 
-        // Convert entities to DTOs
-        List<PostDto> postDtoList = postContent.stream()
+        List<PostDto> postDtoList = pagePost.getContent().stream()
                 .map(post -> modelMapper.map(post, PostDto.class))
                 .collect(Collectors.toList());
 
-        // Prepare the response
         PostResponse postResponse = new PostResponse();
         postResponse.setContent(postDtoList);
         postResponse.setPageNumber(pagePost.getNumber());

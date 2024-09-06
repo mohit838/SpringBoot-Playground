@@ -1,10 +1,5 @@
 package com.mohitul.blog_apps_demo.config;
 
-import com.mohitul.blog_apps_demo.entity.JWTLoginRequest;
-import com.mohitul.blog_apps_demo.entity.JWTRefreshTokenRequest;
-import com.mohitul.blog_apps_demo.entity.JWTResponse;
-import com.mohitul.blog_apps_demo.security.JWTHelper;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,7 +10,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mohitul.blog_apps_demo.entity.JWTLoginRequest;
+import com.mohitul.blog_apps_demo.entity.JWTRefreshTokenRequest;
+import com.mohitul.blog_apps_demo.entity.JWTResponse;
+import com.mohitul.blog_apps_demo.security.JWTHelper;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -52,8 +58,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<JWTResponse> refresh(
-            @Valid
-            @RequestBody JWTRefreshTokenRequest request) {
+            @Valid @RequestBody JWTRefreshTokenRequest request) {
         String refreshToken = request.getRefreshToken();
         String username;
         try {
@@ -84,7 +89,8 @@ public class AuthController {
     }
 
     private void authenticate(String username, String password) {
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,
+                password);
         try {
             manager.authenticate(authentication);
         } catch (BadCredentialsException e) {
