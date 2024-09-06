@@ -22,19 +22,20 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String uploadImage(String path, MultipartFile file) throws IOException {
-        // File name
-        String originalFilename = file.getOriginalFilename();
+        // if (file == null || file.getOriginalFilename() == null) {
+        if (file == null) {
+            throw new IllegalArgumentException("Invalid file.");
+        } else {
+            file.getOriginalFilename();
+        }
 
-        // Random name generate file
-        @SuppressWarnings("null")
+        String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String randomID = UUID.randomUUID().toString();
         String newFilename = randomID + extension;
 
-        // Full path
         String filePath = path + File.separator + newFilename;
 
-        // Create folder if not created
         File directory = new File(path);
         if (!directory.exists()) {
             if (!directory.mkdirs()) {
@@ -42,12 +43,11 @@ public class FileServiceImpl implements FileService {
             }
         }
 
-        // File copy
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, Paths.get(filePath));
         }
 
-        return newFilename; // Return the new file name
+        return newFilename;
     }
 
     @Override
