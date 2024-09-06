@@ -3,6 +3,9 @@ package com.mohitul.blog_apps_demo.services.userServiceImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +24,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserServices {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto createNewUser(UserDto userDto) {
+
+        logger.info("Creating new user with email: {}", userDto.getEmail());
+
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new ResourceAlreadyExistsException("User", "email", userDto.getEmail());
         }
