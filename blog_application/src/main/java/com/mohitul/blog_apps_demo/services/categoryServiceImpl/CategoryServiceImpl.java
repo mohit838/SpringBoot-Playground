@@ -1,18 +1,20 @@
 package com.mohitul.blog_apps_demo.services.categoryServiceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import com.mohitul.blog_apps_demo.entity.CategoryEntity;
 import com.mohitul.blog_apps_demo.exceptions.ResourceAlreadyExistsException;
 import com.mohitul.blog_apps_demo.exceptions.ResourceNotFoundException;
 import com.mohitul.blog_apps_demo.payloads.CategoryDto;
 import com.mohitul.blog_apps_demo.repository.CategoryRepository;
 import com.mohitul.blog_apps_demo.services.CategoryServices;
-import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -34,7 +36,7 @@ public class CategoryServiceImpl implements CategoryServices {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId) {
-        CategoryEntity  existingCategory = categoryRepository.findById(categoryId)
+        CategoryEntity existingCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
         if (categoryDto.getCategoryTitle() != null && !categoryDto.getCategoryTitle().trim().isEmpty()) {

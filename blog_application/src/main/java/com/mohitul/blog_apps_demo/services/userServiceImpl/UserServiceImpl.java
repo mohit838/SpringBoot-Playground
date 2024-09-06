@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserServices {
         return modelMapper.map(updatedUser, UserDto.class);
     }
 
-
     @Override
     public UserDto getUserById(Long userId) {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(

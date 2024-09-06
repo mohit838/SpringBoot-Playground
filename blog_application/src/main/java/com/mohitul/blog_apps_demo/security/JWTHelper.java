@@ -1,18 +1,20 @@
 package com.mohitul.blog_apps_demo.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JWTHelper {
@@ -27,7 +29,7 @@ public class JWTHelper {
     private SecretKey getSigningKey() {
         // Ensure the secret key is at least 256 bits for HS256, HS384, or HS512
         byte[] keyBytes = secret.getBytes();
-        if (keyBytes.length < 32) {  // 256 bits = 32 bytes
+        if (keyBytes.length < 32) { // 256 bits = 32 bytes
             throw new IllegalArgumentException("The secret key must be at least 256 bits (32 bytes) long.");
         }
         return Keys.hmacShaKeyFor(keyBytes);
