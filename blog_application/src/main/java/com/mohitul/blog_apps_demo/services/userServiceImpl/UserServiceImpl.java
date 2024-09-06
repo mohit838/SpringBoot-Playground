@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mohitul.blog_apps_demo.entity.UserEntity;
@@ -23,13 +24,15 @@ public class UserServiceImpl implements UserServices {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public UserDto createNewUser(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new ResourceAlreadyExistsException(
-                    "User", "email", userDto.getEmail());
+            throw new ResourceAlreadyExistsException("User", "email", userDto.getEmail());
         }
 
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
         UserEntity savedUser = userRepository.save(userEntity);
         return modelMapper.map(savedUser, UserDto.class);
@@ -47,16 +50,16 @@ public class UserServiceImpl implements UserServices {
             existingUser.setEmail(userDto.getEmail());
         }
         if (userDto.getPassword() != null && !userDto.getPassword().trim().isEmpty()) {
-            existingUser.setPassword(userDto.getPassword());
+            existingUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
         if (userDto.getAbout() != null && !userDto.getAbout().trim().isEmpty()) {
             existingUser.setAbout(userDto.getAbout());
         }
 
         UserEntity updatedUser = userRepository.save(existingUser);
-
         return modelMapper.map(updatedUser, UserDto.class);
     }
+
 
     @Override
     public UserDto getUserById(Long userId) {
