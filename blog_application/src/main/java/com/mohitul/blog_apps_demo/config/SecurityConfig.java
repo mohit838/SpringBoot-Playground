@@ -2,6 +2,7 @@ package com.mohitul.blog_apps_demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.List;
 
 @Configuration
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint entryPoint;
@@ -34,7 +36,7 @@ public class SecurityConfig {
                     corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
-                    // corsConfiguration.setAllowCredentials(true);
+                     corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(auth -> auth
@@ -45,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/posts/**",
                                 "/api/v1/comments/**",
+                                "/api/v1/user/**",
                                 "/api/v1/categories/**").hasAnyRole("ADMIN")
                         .requestMatchers(
                                 "/api/v1/posts/**",

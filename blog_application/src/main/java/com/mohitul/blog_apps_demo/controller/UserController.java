@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,6 +27,7 @@ import lombok.AllArgsConstructor;
 public class UserController {
     private UserServices userServices;
 
+    //    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/new-user")
     public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDto userDto) {
         UserDto newUser = userServices.createNewUser(userDto);
@@ -47,6 +49,7 @@ public class UserController {
         return ResponseEntity.ok(getUserById);
     }
 
+    //    @PreAuthorize("hasAnyRole('NORMAL_USER')")
     @GetMapping("/get-all-user")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> userLists = userServices.listOfUsers();

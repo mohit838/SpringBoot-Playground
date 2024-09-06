@@ -45,7 +45,6 @@ public class UserEntity implements UserDetails {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
     @Override
