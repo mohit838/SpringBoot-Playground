@@ -34,18 +34,22 @@ public class SecurityConfig {
                     corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(List.of("*"));
+                    // corsConfiguration.setAllowCredentials(true);
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "/api/v1/test",
-                                        "/api/v1/auth/login",
-                                        "/api/v1/auth/refresh").permitAll()
-                                .requestMatchers(
-                                        "/api/v1/posts/**",
-                                        "/api/v1/comments/**",
-                                        "/api/v1/categories/**").hasAnyRole("ADMIN", "USER")
-                                .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/api/v1/test",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/refresh").permitAll()
+                        .requestMatchers(
+                                "/api/v1/posts/**",
+                                "/api/v1/comments/**",
+                                "/api/v1/categories/**").hasAnyRole("ADMIN")
+                        .requestMatchers(
+                                "/api/v1/posts/**",
+                                "/api/v1/categories/**").hasAnyRole("ADMIN", "NORMAL_USER")
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session
