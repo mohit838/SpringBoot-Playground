@@ -1,5 +1,6 @@
 package com.mohitul.blog_apps_demo.security;
 
+import com.mohitul.blog_apps_demo.config.ErrorConstants;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        ErrorConstants.USER_NOT_FOUND_WITH_EMAIL + username));
     }
 }
