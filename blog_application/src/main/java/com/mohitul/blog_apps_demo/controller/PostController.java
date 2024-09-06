@@ -93,7 +93,7 @@ public class PostController {
     }
 
     @PatchMapping("/update-post/{id}")
-    public ResponseEntity<PostDto> getPostById(
+    public ResponseEntity<PostDto> updatePostById(
             @Valid @RequestBody PostDto postDto,
             @PathVariable("id") Long postId) {
         PostDto updatePost = postServices.updatePost(postDto, postId);
