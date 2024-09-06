@@ -1,10 +1,5 @@
 package com.mohitul.blog_apps_demo.services.fileServiceImpl;
 
-import com.mohitul.blog_apps_demo.services.FileService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +8,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mohitul.blog_apps_demo.services.FileService;
+
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
@@ -24,6 +26,7 @@ public class FileServiceImpl implements FileService {
         String originalFilename = file.getOriginalFilename();
 
         // Random name generate file
+        @SuppressWarnings("null")
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String randomID = UUID.randomUUID().toString();
         String newFilename = randomID + extension;
