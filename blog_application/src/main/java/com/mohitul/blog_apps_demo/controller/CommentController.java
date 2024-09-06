@@ -26,7 +26,7 @@ public class CommentController {
     public ResponseEntity<CommentsDto> createNewCategory(
             @Valid @RequestBody CommentsDto commentsDto,
             @PathVariable("id") Long postId) {
-        CommentsDto newComment = commentServices.createNewComments(commentsDto, postId);
+        CommentsDto newComment = commentServices.createNewComment(commentsDto, postId);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 
