@@ -12,7 +12,7 @@
 	<artifactId>ecom-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ecom-demo</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo Ecom SpringBoot Project For Practice</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -45,12 +45,12 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-docker-compose</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
